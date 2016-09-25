@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <title>BHP Net</title>
+    </script>
+    <!-- END OF WEB SNIPPET -->
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="container">
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script>if (window.module) module = window.module;</script>
+
+    <nav>
+  <div class="nav-wrapper teal">
+    <a href="#" class="brand-logo">BHP Net</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+    </ul>
+  </div>
+  <script type="text/javascript">
+  function sendQuery() {
+    $(document).ready(function () {
+      var text = document.getElementById('cyclename').value;
+      var url = "http://127.0.0.1/query.php?cyclename=";
+            $.get(url + text, function( data ) {
+              console.log(data);
+              var json = data;
+              var parsed = JSON.parse(json);
+
+              var arr = [];
+
+              for(var x in parsed){
+                arr.push(parsed[x]);
+              }
+
+              alert( arr[0] +"% chance of " + arr[1] + " minutes delay.");
+            });
+        }
+    );
+
+  }
+  function submitFile(){
+    alert("Causes for delay: Maintenence");
+    //document.getElementById("formU").submit();
+  }
+  </script>
+
+</nav>
+
+    <spacer type="block" height="10"></spacer>
+
+    <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="cyclename" type="text" class="validate">
+              <label for="cyclename">Cycle Name</label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <form id="formU" action="http://127.0.0.1/upload_handler.php" method="post" enctype="multipart/form-data">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>File</span>
+            <input type="file" name="fileToUpload" id="fileToUpload">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </form>
+      <spacer type="vertical" size="10">  </spacer>
+
+    </div>
+    <div class="center-align">
+        <a class="waves-effect waves-light btn" onclick="sendQuery();">Predict Delay</a>
+        <a class="waves-effect waves-light btn" onclick="submitFile();">Predict Cause</a>
+        <form method="LINK" action="chat.html">
+          <input type="submit" class="waves-effect red waves-light btn" value="Go to Chat">
+        </form>
+    </div>
+
+  </div>
+  </body>
+</html>

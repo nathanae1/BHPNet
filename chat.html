@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <title>Communication Network</title>
+    </script>
+    <!-- END OF WEB SNIPPET -->
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+    <script>
+     // Initialize Firebase
+     var config = {
+       apiKey: "AIzaSyC1cOBPzswst1bZBcdAT009-D5ZbFlWb2Q",
+       authDomain: "unearthed-2016-a132e.firebaseapp.com",
+       databaseURL: "https://unearthed-2016-a132e.firebaseio.com/",
+       storageBucket: "gs://unearthed-2016-a132e.appspot.com",
+     };
+     firebase.initializeApp(config);
+     // Get a reference to the database service
+     var database = firebase.database();
+    </script>
+  </head>
+  <body>
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script>if (window.module) module = window.module;</script>
+
+  <div class="row">
+  <form class="col s12">
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="textarea1" class="materialize-textarea"></textarea>
+        <label for="textarea1">Chat</label>
+      </div>
+    </div>
+  </form>
+  <style>
+    #under{
+      float: left;
+      clear : left;
+    }
+    div.chat{
+      padding-left : 40px;
+    }
+    div.command{
+      position : absolute;
+      right : 0;
+      padding-top : 100px;
+      padding-right : 50px;
+    }
+    div.buttons{
+        width:100%;
+        padding:10px;
+        position:absolute;
+        bottom:0; /* should be on bottom of #content */
+    }
+    div.timestamp{
+     position:absolute;
+     bottom:0;
+     right:0;
+     padding-right: 20px;
+    }
+  </style>
+  <script>
+  var userType;
+  function setUserRed(){
+    userType = "worker";
+  }
+  function setUserBlue(){
+    userType = "driver";
+  }
+  function setUserGreen(){
+    userType = "command";
+  }
+  window.onkeyup = function(e) {
+   var key = e.keyCode ? e.keyCode : e.which;
+
+   if (key == 13) {
+     if (userType == "worker"){
+       sendMessageRed(document.getElementById('textarea1').value);
+     }
+     if (userType == "driver"){
+       sendMessageBlue(document.getElementById('textarea1').value);
+     }
+     if (userType == "command"){
+       sendMessageGreen(document.getElementById('textarea1').value);
+     }
+       document.getElementById('textarea1').value = "";
+   }
+  }
+  function sendMessageRed(string){
+    firebase.database().ref('chat/worker').set({
+      text : string
+    });
+  //  var p = $("<div class=\"white-text red chip\" id=\"under\"/>").text(document.getElementById('textarea1').value);
+  //  $(".chat").append(p);
+  }
+  function sendMessageBlue(string){
+    firebase.database().ref('chat/driver').set({
+      text : string
+    });
+  //  var p = $("<div class=\"white-text blue chip\" id=\"under\"/>").text(document.getElementById('textarea1').value);
+  //  $(".chat").append(p);
+  }
+
+  function sendMessageGreen(string){
+    firebase.database().ref('chat/command').set({
+      text : string
+    });
+  //  var p = $("<div class=\"white-text green chip\" id=\"under\"/>").text(document.getElementById('textarea1').value);
+  //  $(".chat").append(p);
+  }
+
+  function UsendMessageRed(string){
+    var p = $("<div class=\"white-text red chip\" id=\"under\"/>").text(string);
+    $(".chat").append(p);
+    var currentdate = new Date();
+    var datetime = "Last Worker Message At: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+   var pi = $("<p class=\"red-text\"/>").text(datetime);
+   $(".timestamp").html(pi);
+  }
+  function UsendMessageBlue(string){
+    var p = $("<div class=\"white-text blue chip\" id=\"under\"/>").text(string);
+    $(".chat").append(p);
+    var currentdate = new Date();
+    var datetime = "Last Driver Message At: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+   var pi = $("<p class=\"blue-text\"/>").text(datetime);
+   $(".timestamp").html(pi);
+  }
+
+  function UsendMessageGreen(string){
+    var p = $("<div class=\"white-text green chip\" id=\"under\"/>").text(string);
+    $(".chat").append(p);
+    var currentdate = new Date();
+    var datetime = "Last Command Message At: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+   var pi = $("<p class=\"green-text\"/>").text(datetime);
+   $(".timestamp").html(pi);
+  }
+
+  function appendCommand(string){
+    var p = $("<h2 class=\"teal-text\"/>").text(string);
+    $(".command").html(p);
+    var currentdate = new Date();
+    var datetime = "Last Command Message At: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+   var pi = $("<p class=\"green-text\"/>").text(datetime);
+   $(".timestamp").html(pi);
+  }
+
+  function appendIcon(string){
+    var p = $("<i class=\"large material-icons\"/>").text(string);
+    $(".command").html(p);
+    var currentdate = new Date();
+    var datetime = "Last Command Message At: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+   var pi = $("<p class=\"green-text\"/>").text(datetime);
+   $(".timestamp").html(pi);
+  }
+
+  function appendImg(string){
+    var p = $("<img class=\"responsive-img\" src=\"image.png\">");
+    $(".command").html(p);
+    var currentdate = new Date();
+    var datetime = "Last Command Message At: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+   var pi = $("<p class=\"green-text\"/>").text(datetime);
+   $(".timestamp").html(pi);
+  }
+
+  var workerref = firebase.database().ref('chat/worker');
+
+  workerref.on('child_changed', function(data) {
+    UsendMessageRed(data.val());
+  });
+
+  var driverref = firebase.database().ref('chat/driver');
+
+  driverref.on('child_changed', function(data) {
+    UsendMessageBlue(data.val());
+  });
+
+  var commandref = firebase.database().ref('chat/command');
+
+  commandref.on('child_changed', function(data) {
+    if (data.val().indexOf("/command") >= 0 && userType != "command"){
+      var formattedString = data.val().substring(9);
+      appendCommand(formattedString);
+    }else if(data.val().indexOf("/icon") >= 0 && userType != "command"){
+      var formattedString = data.val().substring(6);
+      appendIcon(formattedString);
+    } else if (data.val().indexOf("/image") >= 0 && userType != "command"){
+      var formattedString = data.val().substring(8);
+      appendImg(formattedString);
+    }else{
+      UsendMessageGreen(data.val());
+    }
+  });
+
+  </script>
+  <div class="chat">
+
+  </div>
+  <div class="command">
+
+  </div>
+  <div class="buttons">
+    <a class="waves-effect red waves-light btn" onclick="setUserRed();">Worker</a>
+    <a class="waves-effect blue waves-light btn" onclick="setUserBlue();">Driver</a>
+    <a class="waves-effect green waves-light btn" onclick="setUserGreen();">Command</a>
+  </div>
+  <div class="timestamp">
+
+  </div>
+    <a class="waves-effect waves-light btn" style="position:absolute; right : 0; top : 0" href="index.html">Go Back</a>
+  </div>
+  </body>
+</html>
